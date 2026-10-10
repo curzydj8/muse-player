@@ -19,6 +19,7 @@ echo "[2/6] aapt2 link..."
 $BT/aapt2 link -o build/base.apk -I $PLATFORM \
   --manifest app/src/main/AndroidManifest.xml \
   --min-sdk-version 24 --target-sdk-version 34 \
+  --version-code 1 --version-name 1.0 \
   --java build/gen build/compiled_res/*.flat
 
 echo "[3/6] javac..."
