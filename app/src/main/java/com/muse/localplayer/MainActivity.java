@@ -108,12 +108,21 @@ public class MainActivity extends Activity {
         initPlayer();
         handler.post(lrcTick);
 
-        if (checkSelfPermission(android.Manifest.permission.READ_MEDIA_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{android.Manifest.permission.READ_MEDIA_AUDIO}, REQ_PERM);
+        // Android 13+ 用 READ_MEDIA_AUDIO，旧版用 READ_EXTERNAL_STORAGE
+        String perm = android.os.Build.VERSION.SDK_INT >= 33
+                ? android.Manifest.permission.READ_MEDIA_AUDIO
+                : android.Manifest.permission.READ_EXTERNAL_STORAGE;
+        if (checkSelfPermission(perm) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{perm}, REQ_PERM);
         } else {
             loadLocal();
         }
+    }
+
+    private String audioPerm() {
+        return android.os.Build.VERSION.SDK_INT >= 33
+                ? android.Manifest.permission.READ_MEDIA_AUDIO
+                : android.Manifest.permission.READ_EXTERNAL_STORAGE;
     }
 
     @Override
